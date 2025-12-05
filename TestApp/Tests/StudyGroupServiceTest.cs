@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace TestApp.Tests
 {
     [TestFixture]
-    public class StudyGroupServiceTests
+    public class StudyGroupServiceTest
     {
         private Mock<IStudyGroupRepository> _studyGroupRepositoryMock;
         private Mock<IUserRepository> _userRepositoryMock;

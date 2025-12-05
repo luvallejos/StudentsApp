@@ -463,8 +463,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Tests\StudyGroupServiceTests.cs" />
-    <Compile Include="Tests\StudyGroupTests.cs" />
+    <Compile Include="Tests\StudyGroupServiceTest.cs" />
+    <Compile Include="Tests\StudyGroupTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

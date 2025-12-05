@@ -12,7 +12,7 @@ using TestApp;
 namespace TestAppAPI.Tests
 {
     [TestFixture]
-    public class StudyGroupControllerTests
+    public class StudyGroupControllerTest
     {
         private Mock<IStudyGroupService> _studyGroupServiceMock;
         private StudyGroupController _studyGroupController;
