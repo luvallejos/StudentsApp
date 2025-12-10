@@ -27,7 +27,7 @@ namespace TestAppAPI.Tests
         [Test]
         public async Task CreateStudyGroup_ShouldReturnOkResult_WhenGroupCreated()
         {
-            // Arrange
+            //Arrange
             int ownerUserId = 1;
 
             var studyGroup = new StudyGroup(
@@ -40,10 +40,10 @@ namespace TestAppAPI.Tests
             _studyGroupServiceMock.Setup(r => r.CreateStudyGroupAsync(studyGroup, ownerUserId))
                .ReturnsAsync(studyGroup);
 
-            // Act
+            //Act
             var result = await _studyGroupController.CreateStudyGroup(studyGroup, ownerUserId);
 
-            // Assert
+            //Assert
             _studyGroupServiceMock.Verify(r => r.CreateStudyGroupAsync(studyGroup, ownerUserId), Times.Once);
             Assert.That(result, Is.InstanceOf<OkResult>());
         }
@@ -51,11 +51,11 @@ namespace TestAppAPI.Tests
         [Test]
         public void CreateStudyGroup_ShouldThrow_WhenGroupCreationFails()
         {
-            // Arrange
+            //Arrange
             _studyGroupServiceMock.Setup(r => r.CreateStudyGroupAsync((StudyGroup)null, 0))
                .ThrowsAsync(new Exception());
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<Exception>(async () =>
                     await _studyGroupController.CreateStudyGroup((StudyGroup)null, 0)
                 );
@@ -66,7 +66,7 @@ namespace TestAppAPI.Tests
         [Test]
         public async Task GetStudyGroups_ShouldReturnOkAndGroups_WhenRequestSuccesfull()
         {
-            // Arrange
+            //Arrange
             List<StudyGroup> studyGroups = new List<StudyGroup>()
             {
                 new StudyGroup("MathGroup2025", Subject.Math, 1, new HashSet<User>()),
@@ -77,11 +77,11 @@ namespace TestAppAPI.Tests
             _studyGroupServiceMock.Setup(r => r.GetStudyGroupsAsync())
                .ReturnsAsync(studyGroups);
 
-            // Act
+            //Act
             var result = await _studyGroupController.GetStudyGroups() as OkObjectResult;
 
 
-            // Assert
+            //Assert
             _studyGroupServiceMock.Verify(r => r.GetStudyGroupsAsync(), Times.Once);
 
             Assert.That(result, Is.InstanceOf<OkObjectResult>());
@@ -100,11 +100,11 @@ namespace TestAppAPI.Tests
         [Test]
         public void GetStudyGroups_ShouldThrow_WhenRequestFails()
         {
-            // Arrange
+            //Arrange
             _studyGroupServiceMock.Setup(r => r.GetStudyGroupsAsync())
                 .ThrowsAsync(new Exception());
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<Exception>(async () =>
                     await _studyGroupController.GetStudyGroups()
                 );
@@ -115,7 +115,7 @@ namespace TestAppAPI.Tests
         [Test]
         public async Task GetSortedStudyGroups_ShouldReturnSortedGroups_WhenResultsFound()
         {
-            // Arrange
+            //Arrange
             List<StudyGroup> studyGroups = new List<StudyGroup>()
             {
                 new StudyGroup("MathGroup2025", Subject.Math, 1, new HashSet<User>(), new DateTime(2025, 08, 10)),
@@ -128,10 +128,10 @@ namespace TestAppAPI.Tests
             _studyGroupServiceMock.Setup(r => r.GetSortedStudyGroupsAsync(sortedCriteria))
                .ReturnsAsync(studyGroups);
 
-            // Act
+            //Act
             var result = await _studyGroupController.GetSortedStudyGroups(sortedCriteria) as OkObjectResult;
 
-            // Assert
+            //Assert
             _studyGroupServiceMock.Verify(r => r.GetSortedStudyGroupsAsync(sortedCriteria), Times.Once);
 
             Assert.That(result, Is.InstanceOf<OkObjectResult>());
@@ -150,13 +150,13 @@ namespace TestAppAPI.Tests
         [Test]
         public void GetSortedStudyGroups_ShouldThrow_WhenRequestFails()
         {
-            // Arrange
+            //Arrange
             string sortedCriteria = "";
 
             _studyGroupServiceMock.Setup(r => r.GetSortedStudyGroupsAsync(sortedCriteria))
                       .ThrowsAsync(new Exception());
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<Exception>(async () =>
                     await _studyGroupController.GetSortedStudyGroups(sortedCriteria)
                 );
@@ -167,7 +167,7 @@ namespace TestAppAPI.Tests
         [Test]
         public async Task SearchStudyGroups_ShouldReturnGroupsBySubject_WhenResultsFound()
         {
-            // Arrange
+            //Arrange
             string subject = Subject.Math.ToString();
 
             List<StudyGroup> studyGroups = new List<StudyGroup>()
@@ -178,10 +178,10 @@ namespace TestAppAPI.Tests
             _studyGroupServiceMock.Setup(r => r.SearchStudyGroupsAsync(subject))
                .ReturnsAsync(studyGroups);
 
-            // Act
+            //Act
             var result = await _studyGroupController.SearchStudyGroups(subject) as OkObjectResult;
 
-            // Assert
+            //Assert
             _studyGroupServiceMock.Verify(r => r.SearchStudyGroupsAsync(subject), Times.Once);
 
             Assert.That(result, Is.InstanceOf<OkObjectResult>());
@@ -196,13 +196,13 @@ namespace TestAppAPI.Tests
         [Test]
         public void SearchStudyGroups_ShouldThrow_WhenRequestFails()
         {
-            // Arrange
+            //Arrange
             string subject = "";
 
             _studyGroupServiceMock.Setup(r => r.SearchStudyGroupsAsync(subject))
                       .ThrowsAsync(new Exception());
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<Exception>(async () =>
                     await _studyGroupController.SearchStudyGroups(subject)
                 );
@@ -213,14 +213,14 @@ namespace TestAppAPI.Tests
         [Test]
         public async Task JoinStudyGroup_ShouldReturnOkResult_WhenRequestSuccesfull()
         {
-            // Arrange
+            //Arrange
             int studyGroupId = 10;
             int userId = 5;
 
-            // Act
+            //Act
             var result = await _studyGroupController.JoinStudyGroup(studyGroupId, userId);
 
-            // Assert
+            //Assert
             Assert.That(result, Is.InstanceOf<OkResult>());
             _studyGroupServiceMock.Verify(r => r.JoinStudyGroupAsync(studyGroupId, userId), Times.Once);
         }
@@ -228,14 +228,14 @@ namespace TestAppAPI.Tests
         [Test]
         public void JoinStudyGroup_ShouldThrow_WhenRequestFails()
         {
-            // Arrange
+            //Arrange
             int studyGroupId = 1;
             int userId = 1;
 
             _studyGroupServiceMock.Setup(r => r.JoinStudyGroupAsync(studyGroupId, userId))
                       .ThrowsAsync(new Exception());
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<Exception>(async () =>
                     await _studyGroupController.JoinStudyGroup(studyGroupId, userId)
                 );
@@ -246,14 +246,14 @@ namespace TestAppAPI.Tests
         [Test]
         public async Task LeaveStudyGroup_ShouldReturnOkResult_WhenRequestSuccesfull()
         {
-            // Arrange
+            //Arrange
             int studyGroupId = 10;
             int userId = 5;
 
-            // Act
+            //Act
             var result = await _studyGroupController.LeaveStudyGroup(studyGroupId, userId);
 
-            // Assert
+            //Assert
             Assert.That(result, Is.InstanceOf<OkResult>());
             _studyGroupServiceMock.Verify(r => r.LeaveStudyGroupAsync(studyGroupId, userId), Times.Once);
         }
@@ -261,14 +261,14 @@ namespace TestAppAPI.Tests
         [Test]
         public void LeaveStudyGroup_ShouldThrow_WhenRequestFails()
         {
-            // Arrange
+            //Arrange
             int studyGroupId = 1;
             int userId = 2;
 
             _studyGroupServiceMock.Setup(r => r.LeaveStudyGroupAsync(studyGroupId, userId))
                       .ThrowsAsync(new Exception());
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<Exception>(async () =>
                     await _studyGroupController.LeaveStudyGroup(studyGroupId, userId)
                 );

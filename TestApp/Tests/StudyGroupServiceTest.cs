@@ -111,13 +111,13 @@ namespace TestApp.Tests
         [Test]
         public void GetStudyGroups_ShouldThrow_WhenThereAreNoResults()
         {
-            // Arrange
-            List<StudyGroup> studyGroups = new List<StudyGroup>(){ };
+            //Arrange
+            List<StudyGroup> studyGroups = new List<StudyGroup>();
 
             _studyGroupRepositoryMock.Setup(r => r.GetAllStudyGroupsAsync())
                .ReturnsAsync(studyGroups);
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.GetStudyGroupsAsync()
              );
@@ -126,7 +126,7 @@ namespace TestApp.Tests
         [Test]
         public async Task GetSortedStudyGroups_ShouldReturnSortedGroups_WhenSortingNewestFirst()
         {
-            // Arrange
+            //Arrange
             List<StudyGroup> studyGroups = new List<StudyGroup>()
             {
                 new StudyGroup("MathGroup2025", Subject.Math, 1,new HashSet<User>(), new DateTime(2025, 08, 10)),
@@ -139,10 +139,10 @@ namespace TestApp.Tests
             _studyGroupRepositoryMock.Setup(r => r.GetAllStudyGroupsAsync())
                .ReturnsAsync(studyGroups);
 
-            // Act
+            //Act
             var result = await _studyGroupService.GetSortedStudyGroupsAsync(sortedCriteria);
 
-            // Assert
+            //Assert
             Assert.That(result, Is.InstanceOf<List<StudyGroup>>());
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(3));
@@ -157,7 +157,7 @@ namespace TestApp.Tests
         [Test]
         public async Task GetSortedStudyGroups_ShouldReturnSortedGroups_WhenSortingOldestFirst()
         {
-            // Arrange
+            //Arrange
             List<StudyGroup> studyGroups = new List<StudyGroup>()
             {
                 new StudyGroup("MathGroup2025", Subject.Math,1, new HashSet<User>(), new DateTime(2025, 08, 10)),
@@ -170,10 +170,10 @@ namespace TestApp.Tests
             _studyGroupRepositoryMock.Setup(r => r.GetAllStudyGroupsAsync())
                .ReturnsAsync(studyGroups);
 
-            // Act
+            //Act
             var result = await _studyGroupService.GetSortedStudyGroupsAsync(sortedCriteria);
 
-            // Assert
+            //Assert
             Assert.That(result, Is.InstanceOf<List<StudyGroup>>());
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(3));
@@ -188,14 +188,14 @@ namespace TestApp.Tests
         [Test]
         public void GetSortedStudyGroups_ShouldThrow_WhenThereAreNoResults()
         {
-            // Arrange
-            List<StudyGroup> studyGroups = new List<StudyGroup>() { };
+            //Arrange
+            List<StudyGroup> studyGroups = new List<StudyGroup>();
             string sortedCriteria = "";
 
             _studyGroupRepositoryMock.Setup(r => r.GetAllStudyGroupsAsync())
                .ReturnsAsync(studyGroups);
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.GetSortedStudyGroupsAsync(sortedCriteria)
              );
@@ -205,7 +205,7 @@ namespace TestApp.Tests
         [Test]
         public async Task SearchStudyGroups_ShouldReturnGroups_WhenValidSubjectAndThereAreResults()
         {
-            // Arrange
+            //Arrange
             List<StudyGroup> studyGroup = new List<StudyGroup>()
             {
                 new StudyGroup("MathGroup2025", Subject.Math,1, new HashSet<User>()),
@@ -216,10 +216,10 @@ namespace TestApp.Tests
             _studyGroupRepositoryMock.Setup(r => r.SearchStudyGroupsAsync(validSubject))
                .ReturnsAsync(studyGroup);
 
-            // Act
+            //Act
             var result = await _studyGroupService.SearchStudyGroupsAsync(validSubject);
 
-            // Assert
+            //Assert
             Assert.That(result, Is.InstanceOf<List<StudyGroup>>());
             Assert.That(result, Is.Not.Null);
             Assert.That(result.Count, Is.EqualTo(1));
@@ -230,17 +230,15 @@ namespace TestApp.Tests
         [Test]
         public void SearchStudyGroups_ShouldThrow_WhenValidSubjectAndThereAreNoResults()
         {
-            // Arrange
-            List<StudyGroup> studyGroups = new List<StudyGroup>()
-            {
-            };
+            //Arrange
+            List<StudyGroup> studyGroups = new List<StudyGroup>();
 
             string validSubject = Subject.Math.ToString();
 
             _studyGroupRepositoryMock.Setup(r => r.SearchStudyGroupsAsync(validSubject))
                .ReturnsAsync(studyGroups);
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.SearchStudyGroupsAsync(validSubject)
              );
@@ -249,10 +247,10 @@ namespace TestApp.Tests
         [Test]
         public void SearchStudyGroups_ShouldThrow_WhenInvalidSubject()
         {
-            // Arrange
+            //Arrange
             string invalidSubject = "";
 
-            // Act + Assert
+            //Act + Assert
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.SearchStudyGroupsAsync(invalidSubject)
              );
@@ -261,7 +259,7 @@ namespace TestApp.Tests
         [Test]
         public async Task JoinStudyGroup_ShouldAddUser_WhenGroupExistsAndUserDoesNotExistInGroup()
         {
-            // Arrange
+            //Arrange
             StudyGroup studyGroup = new StudyGroup("MathGroup2025", Subject.Math, 1,new HashSet<User>());
             int studyGroupId = 10;
 
@@ -279,10 +277,10 @@ namespace TestApp.Tests
             _studyGroupRepositoryMock.Setup(r => r.UpdateStudyGroupAsync(studyGroupId))
                .ReturnsAsync(studyGroup);
 
-            // Act
+            //Act
             await _studyGroupService.JoinStudyGroupAsync(studyGroupId, userId);
 
-            // Assert
+            //Assert
             _userRepositoryMock.Verify(r => r.GetUserByIdAsync(userId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Once);
@@ -292,7 +290,7 @@ namespace TestApp.Tests
         [Test]
         public void JoinStudyGroup_ShoulThrow_WhenGroupExistsAndUserAlreadyExistsInGroup()
         {
-            // Arrange
+            //Arrange
             User user = new User("John");
             int userId = 2;
 
@@ -305,12 +303,12 @@ namespace TestApp.Tests
             _studyGroupRepositoryMock.Setup(r => r.GetStudyGroupByIdAsync(studyGroupId))
                .ReturnsAsync(studyGroup);
 
-            // Act
+            //Act
             Assert.ThrowsAsync<InvalidOperationException>(
                 () => _studyGroupService.JoinStudyGroupAsync(studyGroupId, userId)
              );
 
-            // Assert
+            //Assert
             _userRepositoryMock.Verify(r => r.GetUserByIdAsync(userId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Never);
@@ -320,19 +318,19 @@ namespace TestApp.Tests
         [Test]
         public void JoinStudyGroup_ShoulThrow_WhenInvalidGroup()
         {
-            // Arrange
+            //Arrange
             int studyGroupId = 10;
             int userId = 2;
 
             _studyGroupRepositoryMock.Setup(r => r.GetStudyGroupByIdAsync(studyGroupId))
                .ReturnsAsync((StudyGroup)null);
 
-            // Act
+            //Act
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.JoinStudyGroupAsync(studyGroupId, userId)
              );
 
-            // Assert
+            //Assert
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Never);
         }
@@ -340,7 +338,7 @@ namespace TestApp.Tests
         [Test]
         public void JoinStudyGroup_ShoulThrow_WhenUserNotFound()
         {
-            // Arrange
+            //Arrange
             StudyGroup studyGroup = new StudyGroup("MathGroup2025", Subject.Math,1, new HashSet<User>());
             int studyGroupId = 10;
 
@@ -352,12 +350,12 @@ namespace TestApp.Tests
             _userRepositoryMock.Setup(r => r.GetUserByIdAsync(userId))
                .ReturnsAsync((User)null);
 
-            // Act
+            //Act
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.JoinStudyGroupAsync(studyGroupId, userId)
              );
 
-            // Assert
+            //Assert
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _userRepositoryMock.Verify(r => r.GetUserByIdAsync(userId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Never);
@@ -367,7 +365,7 @@ namespace TestApp.Tests
         [Test]
         public async Task LeaveStudyGroup_ShouldRemoveUser_WhenGroupExistsAndUserAlreadyExistsInGroup()
         {
-            // Arrange
+            //Arrange
             User user = new User("John");
             int userId = 2;
             user.SetId(userId);
@@ -381,10 +379,10 @@ namespace TestApp.Tests
             _studyGroupRepositoryMock.Setup(r => r.GetStudyGroupByIdAsync(studyGroupId))
                .ReturnsAsync(studyGroup);
 
-            // Act
+            //Act
             await _studyGroupService.LeaveStudyGroupAsync(studyGroupId, userId);
 
-            // Assert
+            //Assert
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _userRepositoryMock.Verify(r => r.GetUserByIdAsync(userId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Once);
@@ -394,7 +392,7 @@ namespace TestApp.Tests
         [Test]
         public void LeaveStudyGroup_ShoulThrow_WhenValidGroupAndUserDoesNotExistInGroup()
         {
-            // Arrange
+            //Arrange
             User user = new User("John");
             int userIdDoesNotExistInGroup = 2;
             user.SetId(userIdDoesNotExistInGroup);
@@ -412,12 +410,12 @@ namespace TestApp.Tests
             _studyGroupRepositoryMock.Setup(r => r.GetStudyGroupByIdAsync(studyGroupId))
                .ReturnsAsync(studyGroup);
 
-            // Act
+            //Act
             Assert.ThrowsAsync<InvalidOperationException>(
                 () => _studyGroupService.LeaveStudyGroupAsync(studyGroupId, userIdDoesNotExistInGroup)
              );
 
-            // Assert
+            //Assert
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _userRepositoryMock.Verify(r => r.GetUserByIdAsync(userIdDoesNotExistInGroup), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Never);
@@ -427,19 +425,19 @@ namespace TestApp.Tests
         [Test]
         public void LeaveStudyGroup_ShoulThrow_WhenInvalidGroup()
         {
-            // Arrange
+            //Arrange
             int studyGroupId = 10;
             int userId = 2;
 
             _studyGroupRepositoryMock.Setup(r => r.GetStudyGroupByIdAsync(studyGroupId))
                .ReturnsAsync((StudyGroup)null);
 
-            // Act
+            //Act
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.LeaveStudyGroupAsync(studyGroupId, userId)
              );
 
-            // Assert
+            //Assert
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Never);
         }
@@ -447,7 +445,7 @@ namespace TestApp.Tests
         [Test]
         public void LeaveStudyGroup_ShoulThrow_WhenUserNotFound()
         {
-            // Arrange
+            //Arrange
             StudyGroup studyGroup = new StudyGroup("MathGroup2025", Subject.Math, 1,new HashSet<User>());
             int studyGroupId = 10;
 
@@ -459,12 +457,12 @@ namespace TestApp.Tests
             _userRepositoryMock.Setup(r => r.GetUserByIdAsync(userId))
                .ReturnsAsync((User)null);
 
-            // Act
+            //Act
             Assert.ThrowsAsync<ArgumentException>(
                 () => _studyGroupService.LeaveStudyGroupAsync(studyGroupId, userId)
              );
 
-            // Assert
+            //Assert
             _studyGroupRepositoryMock.Verify(r => r.GetStudyGroupByIdAsync(studyGroupId), Times.Once);
             _studyGroupRepositoryMock.Verify(r => r.UpdateStudyGroupAsync(studyGroupId), Times.Never);
             Assert.That(studyGroup.Users.Count, Is.EqualTo(0));
